@@ -6,7 +6,7 @@ from setuptools import find_packages, setup
 setup(
     name="fastsam",
     version="0.1.1",
-    install_requires=[],
+    install_requires=parse_requirements("requirements.txt"),
     package_dir= {
         "fastsam": "fastsam",
         "fastsam_tools": "utils",
