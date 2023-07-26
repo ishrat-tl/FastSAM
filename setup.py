@@ -23,7 +23,6 @@ def parse_requirements(fname="requirements.txt", with_version=True):
 
     require_fpath = fname
 
-
     def parse_line(line):
         """Parse information from a line in a requirements text file."""
         if line.startswith("-r "):
@@ -42,7 +41,7 @@ def parse_requirements(fname="requirements.txt", with_version=True):
                 pat = "(" + "|".join([">=", "==", ">"]) + ")"
                 parts = re.split(pat, line, maxsplit=1)
                 parts = [p.strip() for p in parts]
-    
+
                 info["package"] = parts[0]
                 if len(parts) > 1:
                     op, rest = parts[1:]
@@ -55,7 +54,7 @@ def parse_requirements(fname="requirements.txt", with_version=True):
                         version = rest  # NOQA
                     info["version"] = (op, version)
             yield info
-    
+
     def parse_require_file(fpath):
         with open(fpath, "r") as f:
             for line in f.readlines():
@@ -63,23 +62,23 @@ def parse_requirements(fname="requirements.txt", with_version=True):
                 if line and not line.startswith("#"):
                     for info in parse_line(line):
                         yield info
-    def gen_packages_items():
-            if exists(require_fpath):
-                for info in parse_require_file(require_fpath):
-                    parts = [info["package"]]
-                    if with_version and "version" in info:
-                        parts.extend(info["version"])
-                    if not sys.version.startswith("3.4"):
-                        # apparently package_deps are broken in 3.4
-                        platform_deps = info.get("platform_deps")
-                        if platform_deps is not None:
-                            parts.append(";" + platform_deps)
-                    item = "".join(parts)
-                    yield item
-    
-        packages = list(gen_packages_items())
-        return packages
 
+    def gen_packages_items():
+        if exists(require_fpath):
+            for info in parse_require_file(require_fpath):
+                parts = [info["package"]]
+                if with_version and "version" in info:
+                    parts.extend(info["version"])
+                if not sys.version.startswith("3.4"):
+                    # apparently package_deps are broken in 3.4
+                    platform_deps = info.get("platform_deps")
+                    if platform_deps is not None:
+                        parts.append(";" + platform_deps)
+                item = "".join(parts)
+                yield item
+
+    packages = list(gen_packages_items())
+    return packages
 
 
 setup(
