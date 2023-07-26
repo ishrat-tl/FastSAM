@@ -9,7 +9,7 @@ setup(
     install_requires=[],
     package_dir= {
         "fastsam": "fastsam",
-        "fastsam_tools": "fastsam_utils",
+        "fastsam_tools": "utils",
     },
     url="https://github.com/CASIA-IVA-Lab/FastSAM",
 )
